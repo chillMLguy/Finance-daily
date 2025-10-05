@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Movers -->
+    <section class="lg:col-span-2 bg-white rounded-2xl shadow p-4">
+        <div class="flex items-center justify-between mb-3">
+            <h2 class="text-lg font-semibold">Top Movers (dzień do dnia)</h2>
+            <div>
+                <select id="watchlist" class="border rounded px-2 py-1 text-sm">
+                    {% for a in assets %}<option value="{{ a }}">{{ a }}</option>{% endfor %}
+                </select>
+                <button id="btn-load-movers"
+                    class="ml-2 text-sm px-3 py-1 rounded bg-slate-900 text-white">Odśwież</button>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm" id="movers-table">
+                <thead>
+                    <tr class="text-left">
+                        <th class="py-2">Aktywo</th>
+                        <th>Zmiana %</th>
+                        <th>Close</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <!-- News -->
+    <section class="bg-white rounded-2xl shadow p-4">
+        <div class="flex items-center justify-between mb-3">
+            <h2 class="text-lg font-semibold">🗞️ Najnowsze nagłówki</h2>
+            <button id="btn-load-news" class="text-sm px-3 py-1 rounded bg-slate-900 text-white">Odśwież</button>
+        </div>
+        <ul id="news-list" class="space-y-3"></ul>
+    </section>
+</div>
+
+
+<!-- Chart -->
+<section class="mt-6 bg-white rounded-2xl shadow p-4">
+    <div class="flex flex-wrap items-center gap-2 mb-3">
+        <h2 class="text-lg font-semibold">Wykres</h2>
+        <label class="ml-auto text-sm">Symbol:
+            <select id="symbol" class="border rounded px-2 py-1 text-sm">
+                {% for a in assets %}<option value="{{ a }}">{{ a }}</option>{% endfor %}
+            </select>
+        </label>
+        <label class="text-sm">Okres:
+            <select id="period" class="border rounded px-2 py-1 text-sm">
+                <option>1d</option>
+                <option>5d</option>
+                <option>1mo</option>
+                <option>3mo</option>
+                <option selected>6mo</option>
+                <option>1y</option>
+                <option>2y</option>
+            </select>
+        </label>
+        <button id="btn-load-chart" class="text-sm px-3 py-1 rounded bg-slate-900 text-white">Rysuj</button>
+    </div>
+    <div id="chart" class="w-full" style="height:480px"></div>
+</section>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        window.loadMovers();
+        window.loadNews();
+        window.drawChart();
+    });
+</script>
+{% endblock %}
