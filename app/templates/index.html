@@ -6,11 +6,7 @@
         <div class="flex items-center justify-between mb-3">
             <h2 class="text-lg font-semibold">Top Movers (dzień do dnia)</h2>
             <div>
-                <select id="watchlist" class="border rounded px-2 py-1 text-sm">
-                    {% for a in assets %}<option value="{{ a }}">{{ a }}</option>{% endfor %}
-                </select>
-                <button id="btn-load-movers"
-                    class="ml-2 text-sm px-3 py-1 rounded bg-slate-900 text-white">Odśwież</button>
+                <button id="btn-load-movers" class="text-sm px-3 py-1 rounded bg-slate-900 text-white">Odśwież</button>
             </div>
         </div>
         <div class="overflow-x-auto">
@@ -31,10 +27,25 @@
 
     <!-- News -->
     <section class="bg-white rounded-2xl shadow p-4">
-        <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center justify-between mb-3 gap-2">
             <h2 class="text-lg font-semibold">🗞️ Najnowsze nagłówki</h2>
-            <button id="btn-load-news" class="text-sm px-3 py-1 rounded bg-slate-900 text-white">Odśwież</button>
         </div>
+        <div class="flex items-center gap-2 mb-3">
+            <input id="news-q" class="border rounded px-2 py-1 text-sm flex-1"
+                placeholder="Filtruj po słowach (np. CPI, Fed, WIG20)" />
+            <select id="news-source" class="border rounded px-2 py-1 text-sm">
+                <option value="">Wszystkie źródła</option>
+                {% for s in news_sources %}<option value="{{ s }}">{{ s }}</option>{% endfor %}
+            </select>
+            <select id="news-limit" class="border rounded px-2 py-1 text-sm">
+                <option>10</option>
+                <option selected>20</option>
+                <option>30</option>
+                <option>50</option>
+            </select>
+            <button id="btn-load-news" class="text-sm px-3 py-1 rounded bg-slate-900 text-white">Szukaj</button>
+        </div>
+        <div id="news-status" class="text-sm text-slate-500 mb-2"></div>
         <ul id="news-list" class="space-y-3"></ul>
     </section>
 </div>

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Query
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -7,7 +7,7 @@ from typing import List
 
 
 from .services.market_data import DEFAULT_ASSETS, get_daily_changes, get_history
-from .services.news import get_news_items
+from .services.news import get_news_items_async, RSS_SOURCES
 
 
 app = FastAPI(title="Market Monitor")
@@ -25,6 +25,7 @@ async def home(request: Request):
         {
             "request": request,
             "assets": list(DEFAULT_ASSETS.keys()),
+            "news_sources": list(RSS_SOURCES.keys()),
         },
     )
 
@@ -66,5 +67,13 @@ async def api_prices(symbol: str, period: str = "6mo"):
 
 
 @app.get("/api/news")
-async def api_news(limit: int = 15):
-    return JSONResponse(get_news_items(limit=limit))
+async def api_news(
+    limit: int = 15,
+    q: str | None = Query(default=None),
+    sources: str | None = Query(default=None),
+):
+    only = sources.split(",") if sources else None
+    data = await get_news_items_async(
+        limit=limit, query=q, only_sources=only
+    )  # 👈 tu jest await
+    return JSONResponse(data)
