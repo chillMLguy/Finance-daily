@@ -1,3 +1,3 @@
 # Finance-daily
 
-Financial daily news for self-use.
+Financial daily news and market summary for self-use
